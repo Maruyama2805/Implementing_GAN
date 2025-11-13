@@ -34,3 +34,46 @@ Se a imagem de teste for **normal**, o Gerador (que só viu dados normais) conse
 ## 2. Importância para Engenharia de Controle e Automação
 
 As arquiteturas GAN e AnoGAN têm um impacto significativo na engenharia de controle e automação, principalmente para garantir segurança, qualidade e eficiência em sistemas
+* **Manutenção Preditiva e Detecção de Falhas:** Em um sistema de automação (como uma linha de montagem ou uma turbina), sensores monitoram vibração, temperatura, pressão e som. Uma AnoGAN pode ser treinada usando dados desses sensores durante a operação **normal** (saudável) da máquina. O sistema pode, então, monitorar a máquina em tempo real. Qualquer desvio nos dados dos sensores (que gere um alto "erro de reconstrução" na AnoGAN) é classificado como uma anomalia. Isso permite que engenheiros de controle identifiquem uma falha iminente (ex: um rolamento desgastado) **antes** que ela cause uma parada catastrófica, habilitando a manutenção preditiva.
+
+* **Controle de Qualidade Automatizado (Visão Computacional):** Em linhas de produção automatizadas, câmeras inspecionam produtos (ex: placas de circuito, soldas, tecidos). Treinar um sistema de visão para encontrar *todos* os defeitos possíveis é difícil, pois os defeitos podem ser raros ou imprevisíveis. Com a AnoGAN, o sistema é treinado apenas com imagens de produtos **perfeitos**. Qualquer produto que apresente um defeito visual (um arranhão, um componente desalinhado) será marcado como uma anomalia, sendo automaticamente rejeitado pelo sistema de controle.
+
+* **Simulação e Geração de Dados (Digital Twins):** Controladores robustos precisam ser testados em cenários de falha, que muitas vezes são raros e perigosos de se replicar em equipamentos reais. As GANs (o Gerador) podem ser usadas para **gerar dados sintéticos realistas** que simulam essas falhas raras (ex: picos de sensor, falhas de atuador). Esses dados sintéticos podem ser usados para treinar controladores mais seguros ou para validar "Gêmeos Digitais" (Digital Twins) do processo industrial.
+
+## 3. Sobre esta Implementação (`GAN.ipynb`)
+
+Este notebook foca no primeiro passo: construir a GAN base. Ele **não** é uma AnoGAN, mas implementa o Gerador e o Discriminador que são os componentes centrais de uma AnoGAN.
+
+* **Framework:** PyTorch
+* **Dataset:** MNIST (dígitos escritos à mão, normalizados para `[-1, 1]`)
+* **Arquitetura:**
+    * `Generator`: Usa camadas `ConvTranspose2d` (transposição convolucional) para fazer o *upsampling* do vetor latente (`z`) de 100 dimensões até uma imagem 1x28x28.
+    * `Discriminator`: Usa camadas `Conv2d` (convolucional) para fazer o *downsampling* de uma imagem 1x28x28 até uma única previsão (Real/Falsa).
+* **Treinamento:** O notebook itera por 50 épocas, treinando alternadamente o Discriminador e o Gerador. O progresso é visualizado usando `tqdm`.
+* **Resultado:** O modelo treinado do Gerador é salvo em `generator_mnist.pth`. A seção final do notebook carrega este arquivo e gera 16 imagens sintéticas de dígitos.
+
+## 4. Como Usar
+
+### Pré-requisitos
+
+Você precisará das seguintes bibliotecas Python:
+* `torch`
+* `torchvision`
+* `matplotlib`
+* `tqdm`
+
+### Executando o Projeto
+
+1.  **Treinamento:**
+    * Abra o `GAN.ipynb` em um ambiente Jupyter (como Google Colab ou localmente).
+    * Execute as células sequencialmente. O script irá baixar o dataset MNIST automaticamente.
+    * Ao final do treinamento (cerca de 30 minutos em uma GPU T4), o modelo `generator_mnist.pth` será salvo.
+
+2.  **Geração de Imagens:**
+    * Execute as células na seção "Visualizando resultados".
+    * Este script irá carregar o `generator_mnist.pth`, gerar 16 imagens e exibi-las usando `matplotlib`. Uma cópia da grade de imagens também será salva como `generated_mnist_grid.png`.
+
+## 5. Referências
+
+1.  [Guias de Machine Learning | Google Developers (PT-BR)](https://developers.google.com/machine-learning/guides?hl=pt-br)
+2.  [f-AnoGAN: Fast unsupervised anomaly detection with generative adversarial networks (TUMdlma)](https://collab.dvb.bayern/spaces/TUMdlma/pages/73379950/f-AnoGAN+Fast+unsupervised+anomaly+detection+with+generative+adversarial+networks)
