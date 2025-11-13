@@ -6,8 +6,6 @@ Este projeto serve como uma introdução prática à arquitetura de GANs, que é
 
 ## 1. Conceitos-Chave
 
-De acordo com os materiais de referência fornecidos, abaixo estão os conceitos fundamentais.
-
 ### 1.1. O que é uma GAN (Generative Adversarial Network)?
 
 Uma Rede Adversarial Geradora (GAN) é um tipo de arquitetura de machine learning que consiste em duas redes neurais competindo entre si. Esse "jogo" permite que o sistema crie dados sintéticos novos e realistas. As duas redes são:
