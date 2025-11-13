@@ -51,6 +51,10 @@ Este notebook foca no primeiro passo: construir a GAN base. Ele **não** é uma 
     * `Discriminator`: Usa camadas `Conv2d` (convolucional) para fazer o *downsampling* de uma imagem 1x28x28 até uma única previsão (Real/Falsa).
 * **Treinamento:** O notebook itera por 50 épocas, treinando alternadamente o Discriminador e o Gerador. O progresso é visualizado usando `tqdm`.
 * **Resultado:** O modelo treinado do Gerador é salvo em `generator_mnist.pth`. A seção final do notebook carrega este arquivo e gera 16 imagens sintéticas de dígitos.
+### 🖼️ Imagens Geradas pelo Modelo
+
+<img width="508" height="505" alt="image" src="https://github.com/user-attachments/assets/2f601992-6a29-4792-a816-aa5587397c89" />
+
 
 ## 4. Como Usar
 
